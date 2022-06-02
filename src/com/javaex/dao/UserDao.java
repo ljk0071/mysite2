@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.javaex.vo.PersonVo;
 import com.javaex.vo.UserVo;
 
 public class UserDao {
@@ -266,6 +267,37 @@ public class UserDao {
 		}
 		Close();
 		return userVo;
+	}
+	public void Update(UserVo userVo) {
+		try {
+			getConnection();
+			// 3. SQL문 준비 / 바인딩 / 실행
+
+			// SQL문 준비
+			String query = "";
+			query += "update users ";
+			query += "set name = ? ";
+			query += ",password = ? ";
+			query += ",gender = ? ";
+			query += "where no = ? ";
+
+			// 바인딩
+			pstmt = conn.prepareStatement(query); // 문자열을 쿼리로 만들기
+			pstmt.setString(1, userVo.name);
+			pstmt.setString(2, userVo.pw);
+			pstmt.setString(3, userVo.gender);
+			pstmt.setInt(4, userVo.no);
+
+			// 실행
+			count = pstmt.executeUpdate(); // 쿼리문 실행 -->리턴값으로 성공갯수
+			System.out.println(count + "건이 수정 되었습니다.");
+
+			// 4.결과처리
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		Close();
 	}
 	
 }

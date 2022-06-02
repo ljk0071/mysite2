@@ -79,7 +79,7 @@
 	
 				<div id="user">
 					<div id="modifyForm">
-						<form action="" method="post">
+						<form action="./user" method="post">
 	
 							<!-- 아이디 -->
 							<div class="form-group">
@@ -114,6 +114,8 @@
 							<!-- 버튼영역 -->
 							<div class="button-area">
 								<button type="submit" id="btn-submit">회원정보수정</button>
+								<input type="hidden" name="userNo" value=<%=authUser.no %>>
+								<input type="hidden" name="action" value="update">
 							</div>
 							
 						</form>

@@ -59,10 +59,19 @@ public class UserController extends HttpServlet {
 			session.removeAttribute("authUser");
 			WebUtil.redirect(request, response, "./main");
 
-		} else if (action.equals("update")) {
+		} else if (action.equals("updateform")) {
 			int no = Integer.parseInt(request.getParameter("userNo"));
 			request.setAttribute("no", no);
 			WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
+
+		} else if (action.equals("update")) {
+			int no = Integer.parseInt(request.getParameter("userNo"));
+			String pw = request.getParameter("pw");
+			String name = request.getParameter("name");
+			String gender = request.getParameter("gender");
+			UserVo userVo = new UserVo(no, pw, name, gender);
+			userDao.Update(userVo);
+			WebUtil.redirect(request, response, "./main");
 
 		} else {
 			WebUtil.forward(request, response, "/WEB-INF/views/main/index.jsp");

@@ -25,7 +25,7 @@
 			<ul>
 				<li><%=authUser.name %>님 안녕하세요^^</li>
 				<li><a href="./user?action=logout" class="btn_s">로그아웃</a></li>
-				<li><a href="./user?action=update&userNo=<%=authUser.no %>" class="btn_s">회원정보수정</a></li>
+				<li><a href="./user?action=updateform&userNo=<%=authUser.no %>" class="btn_s">회원정보수정</a></li>
 			</ul>
 			<%}else { %>
 			<ul>
