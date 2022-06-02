@@ -177,7 +177,7 @@ public class UserDao {
 		try {
 			String query = "select no\r\n"
 					+ "    ,id\r\n"
-					+ "    ,pw\r\n"
+					+ "    ,password\r\n"
 					+ "    ,name\r\n"
 					+ "    ,gender\r\n"
 					+ "from users\r\n"
@@ -209,7 +209,7 @@ public class UserDao {
 		try {
 			String query = "select no\r\n"
 					+ "    ,id\r\n"
-					+ "    ,pw\r\n"
+					+ "    ,password\r\n"
 					+ "    ,name\r\n"
 					+ "    ,gender\r\n"
 					+ "from users\r\n"
@@ -227,6 +227,39 @@ public class UserDao {
 				String name = rs.getString(4);
 				String gender = rs.getString(5);
 				userVo = new UserVo(userNo2, id, pw, name, gender);
+			}
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		Close();
+		return userVo;
+	}
+	public UserVo Select(String id, String pw) {
+		UserVo userVo = new UserVo();
+		getConnection();
+		try {
+			String query = "select no\r\n"
+					+ "    ,id\r\n"
+					+ "    ,password\r\n"
+					+ "    ,name\r\n"
+					+ "    ,gender\r\n"
+					+ "from users\r\n"
+					+ "where id = ? "
+					+ "and password = ? ";
+
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int userNo2 = rs.getInt(1);
+				String id2 = rs.getString(2);
+				String pw2 = rs.getString(3);
+				String name = rs.getString(4);
+				String gender = rs.getString(5);
+				userVo = new UserVo(userNo2, id2, pw2, name, gender);
 			}
 		} catch (SQLException e) {
 			System.out.println("error:" + e);

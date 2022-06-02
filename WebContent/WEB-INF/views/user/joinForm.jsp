@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +15,7 @@
 
 		<div id="header" class="clearfix">
 			<h1>
-				<a href="">MySite</a>
+				<a href="./main">MySite</a>
 			</h1>
 
 			<!-- 
@@ -24,8 +26,8 @@
 			</ul>
 			-->	
 			<ul>
-				<li><a href="./main?action=login" class="btn_s">로그인</a></li>
-				<li><a href="./main?action=join" class="btn_s">회원가입</a></li>
+				<li><a href="./user?action=login" class="btn_s">로그인</a></li>
+				<li><a href="./user?action=join" class="btn_s">회원가입</a></li>
 			</ul>
 			
 		</div>
@@ -69,20 +71,19 @@
 	
 				<div id="user">
 					<div id="joinForm">
-						<form action="./main" method="post">
+						<form action="./user" method="get">
 	
 							<!-- 아이디 -->
 							<div class="form-group">
 								<label class="form-text" for="input-uid">아이디</label> 
 								<input type="text" id="input-uid" name="id" value="" placeholder="아이디를 입력하세요">
 								<button type="button" id="">중복체크</button>
-								
 							</div>
 	
 							<!-- 비밀번호 -->
 							<div class="form-group">
 								<label class="form-text" for="input-pass">패스워드</label> 
-								<input type="password" id="input-pass" name="pw" value="" placeholder="비밀번호를 입력하세요"	>
+								<input type="text" id="input-pass" name="pw" value="" placeholder="비밀번호를 입력하세요"	>
 							</div>
 	
 							<!-- 이메일 -->
@@ -107,7 +108,7 @@
 							<div class="form-group">
 								<span class="form-text">약관동의</span> 
 								
-								<input type="checkbox" id="chk-agree" value="" name="">
+								<input type="checkbox" id="chk-agree" value="agree" name="terms">
 								<label for="chk-agree">서비스 약관에 동의합니다.</label> 
 							</div>
 							
