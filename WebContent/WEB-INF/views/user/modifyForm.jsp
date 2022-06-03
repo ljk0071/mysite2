@@ -116,7 +116,6 @@
 							<!-- 버튼영역 -->
 							<div class="button-area">
 								<button type="submit" id="btn-submit">회원정보수정</button>
-								<input type="hidden" name="userNo" value=<%=authUser.getNo() %>>
 								<input type="hidden" name="action" value="update">
 							</div>
 							

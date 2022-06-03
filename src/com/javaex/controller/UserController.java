@@ -25,7 +25,7 @@ public class UserController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		UserDao userDao = new UserDao();
 		String action = request.getParameter("action");
-		HttpSession session;
+		HttpSession session = null;
 		if (action.equals("login")) {
 			WebUtil.forward(request, response, "/WEB-INF/views/user/loginForm.jsp");
 
@@ -73,7 +73,9 @@ public class UserController extends HttpServlet {
 			WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
 
 		} else if ("update".equals(action)) {
-			int no = Integer.parseInt(request.getParameter("userNo"));
+			session = request.getSession();
+			UserVo authUser = (UserVo)session.getAttribute("authUser");
+			int no = authUser.getNo();
 			String pw = request.getParameter("pw");
 			String name = request.getParameter("name");
 			String gender = request.getParameter("gender");

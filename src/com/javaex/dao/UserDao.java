@@ -290,7 +290,6 @@ public class UserDao {
 
 			// 실행
 			count = pstmt.executeUpdate(); // 쿼리문 실행 -->리턴값으로 성공갯수
-			System.out.println(count + "건이 수정 되었습니다.");
 
 			// 4.결과처리
 
