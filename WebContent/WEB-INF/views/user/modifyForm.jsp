@@ -1,11 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="com.javaex.dao.UserDao" %>
 <%@ page import="com.javaex.vo.UserVo" %>    
 <% 
-	int no = (int)request.getAttribute("no"); 
-	UserDao userDao = new UserDao();
-	UserVo authUser = userDao.Select(no);
+	UserVo authUser = (UserVo)session.getAttribute("authUser");
 %>    
 <!DOCTYPE html>
 <html>
@@ -22,14 +19,13 @@
 
 		<div id="header" class="clearfix">
 			<h1>
-				<a href="">MySite</a>
+				<a href="./main">MySite</a>
 			</h1>
-
 			<%if (authUser != null) { %>
 			<ul>
-				<li><%=authUser.name %>님 안녕하세요^^</li>
+				<li><%=authUser.getName()%>님 안녕하세요^^</li>
 				<li><a href="./user?action=logout" class="btn_s">로그아웃</a></li>
-				<li><a href="./user?action=update&userNo=<%=authUser.no %>" class="btn_s">회원정보수정</a></li>
+				<li><a href="./user?action=modify" class="btn_s">회원정보수정</a></li>
 			</ul>
 			<%}else { %>
 			<ul>
@@ -46,7 +42,7 @@
 				<li><a href="">입사지원서</a></li>
 				<li><a href="">게시판</a></li>
 				<li><a href="">갤러리</a></li>
-				<li><a href="">방명록</a></li>
+				<li><a href="./board?action=list">방명록</a></li>
 			</ul>
 		</div>
 		<!-- //nav -->
@@ -84,7 +80,7 @@
 							<!-- 아이디 -->
 							<div class="form-group">
 								<label class="form-text" for="input-uid">아이디</label> 
-								<span class="text-large bold"><%=authUser.id %></span>
+								<span class="text-large bold"><%=authUser.getId() %></span>
 							</div>
 	
 							<!-- 비밀번호 -->
@@ -114,7 +110,7 @@
 							<!-- 버튼영역 -->
 							<div class="button-area">
 								<button type="submit" id="btn-submit">회원정보수정</button>
-								<input type="hidden" name="userNo" value=<%=authUser.no %>>
+								<input type="hidden" name="userNo" value=<%=authUser.getNo() %>>
 								<input type="hidden" name="action" value="update">
 							</div>
 							

@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ page import="com.javaex.vo.UserVo" %>
+<% 
+	UserVo authUser = (UserVo)session.getAttribute("authUser");
+%>       
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,18 +21,18 @@
 			<h1>
 				<a href="./main">MySite</a>
 			</h1>
-
-			<!-- 
+			<%if (authUser != null) { %>
 			<ul>
-				<li>황일영 님 안녕하세요^^</li>
-				<li><a href="" class="btn_s">로그아웃</a></li>
-				<li><a href="" class="btn_s">회원정보수정</a></li>
+				<li><%=authUser.getName()%>님 안녕하세요^^</li>
+				<li><a href="./user?action=logout" class="btn_s">로그아웃</a></li>
+				<li><a href="./user?action=modify" class="btn_s">회원정보수정</a></li>
 			</ul>
-			-->	
+			<%}else { %>
 			<ul>
 				<li><a href="./user?action=login" class="btn_s">로그인</a></li>
 				<li><a href="./user?action=join" class="btn_s">회원가입</a></li>
 			</ul>
+			<%} %>
 			
 		</div>
 		<!-- //header -->
@@ -38,7 +42,7 @@
 				<li><a href="">입사지원서</a></li>
 				<li><a href="">게시판</a></li>
 				<li><a href="">갤러리</a></li>
-				<li><a href="">방명록</a></li>
+				<li><a href="./board?action=list">방명록</a></li>
 			</ul>
 		</div>
 		<!-- //nav -->

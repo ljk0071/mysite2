@@ -125,10 +125,10 @@ public class UserDao {
 					+ "values(seq_users_no.nextval, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, userVo.id);
-			pstmt.setString(2, userVo.pw);
-			pstmt.setString(3, userVo.name);
-			pstmt.setString(4, userVo.gender);
+			pstmt.setString(1, userVo.getId());
+			pstmt.setString(2, userVo.getPw());
+			pstmt.setString(3, userVo.getName());
+			pstmt.setString(4, userVo.getGender());
 
 			count = pstmt.executeUpdate(); 
 		} catch (SQLException e) {
@@ -205,7 +205,7 @@ public class UserDao {
 	}
 	
 	public UserVo Select(int userNo) {
-		UserVo userVo = new UserVo();
+		UserVo userVo = null;
 		getConnection();
 		try {
 			String query = "select no\r\n"
@@ -236,7 +236,7 @@ public class UserDao {
 		return userVo;
 	}
 	public UserVo Select(String id, String pw) {
-		UserVo userVo = new UserVo();
+		UserVo userVo = null;
 		getConnection();
 		try {
 			String query = "select no\r\n"
@@ -283,10 +283,10 @@ public class UserDao {
 
 			// 바인딩
 			pstmt = conn.prepareStatement(query); // 문자열을 쿼리로 만들기
-			pstmt.setString(1, userVo.name);
-			pstmt.setString(2, userVo.pw);
-			pstmt.setString(3, userVo.gender);
-			pstmt.setInt(4, userVo.no);
+			pstmt.setString(1, userVo.getName());
+			pstmt.setString(2, userVo.getPw());
+			pstmt.setString(3, userVo.getGender());
+			pstmt.setInt(4, userVo.getNo());
 
 			// 실행
 			count = pstmt.executeUpdate(); // 쿼리문 실행 -->리턴값으로 성공갯수
