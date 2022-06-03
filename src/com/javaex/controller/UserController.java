@@ -66,11 +66,15 @@ public class UserController extends HttpServlet {
 
 		} else if ("modify".equals(action)) {
 			session = request.getSession();
-			UserVo authUser = (UserVo)session.getAttribute("authUser");
-			int no = authUser.getNo();
-			UserVo authVo = userDao.Select(no);
-			session.setAttribute("authUser", authVo);
-			WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
+			try {
+				UserVo authUser = (UserVo)session.getAttribute("authUser");
+				int no = authUser.getNo();
+				UserVo authVo = userDao.Select(no);
+				session.setAttribute("authUser", authVo);
+				WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
+			} catch (NullPointerException e) {
+				WebUtil.forward(request, response, "/WEB-INF/views/user/loginForm.jsp");
+			}
 
 		} else if ("update".equals(action)) {
 			session = request.getSession();
