@@ -46,12 +46,17 @@ public class UserController extends HttpServlet {
 		} else if (action.equals("loginCheck")) {
 			String id = request.getParameter("id");
 			String pw = request.getParameter("pw");
-			UserVo authUser = userDao.Select(id, pw);
-			if (authUser == null) {
-			} else {
-				session = request.getSession();
-				session.setAttribute("authUser", authUser);
-				WebUtil.redirect(request, response, "./main");
+			try {
+				UserVo authUser = userDao.Select(id, pw);
+				if (authUser.id.equals(id)) {
+					if(authUser.pw.equals(pw)) {
+						session = request.getSession();
+						session.setAttribute("authUser", authUser);
+						WebUtil.redirect(request, response, "./main");
+					}
+				}
+			} catch (NullPointerException e) {
+				WebUtil.forward(request, response, "/WEB-INF/views/user/loginForm.jsp");
 			}
 
 		} else if (action.equals("logout")) {
@@ -71,7 +76,10 @@ public class UserController extends HttpServlet {
 			String gender = request.getParameter("gender");
 			UserVo userVo = new UserVo(no, pw, name, gender);
 			userDao.Update(userVo);
-			WebUtil.redirect(request, response, "./main");
+			session = request.getSession();
+			session.removeAttribute("authUser");
+			session.setAttribute("authUser", userVo);
+			WebUtil.forward(request, response, "./main");
 
 		} else {
 			WebUtil.forward(request, response, "/WEB-INF/views/main/index.jsp");
