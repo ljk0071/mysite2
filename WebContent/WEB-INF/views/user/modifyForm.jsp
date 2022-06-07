@@ -1,9 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="com.javaex.vo.UserVo" %>    
-<% 
-	UserVo authUser = (UserVo)session.getAttribute("authUser");
-%>    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,24 +13,8 @@
 <body>
 	<div id="wrap">
 
-		<div id="header" class="clearfix">
-			<h1>
-				<a href="./main">MySite</a>
-			</h1>
-			<%if (authUser != null) { %>
-			<ul>
-				<li><%=authUser.getName()%>님 안녕하세요^^</li>
-				<li><a href="./user?action=logout" class="btn_s">로그아웃</a></li>
-				<li><a href="./user?action=modify" class="btn_s">회원정보수정</a></li>
-			</ul>
-			<%}else { %>
-			<ul>
-				<li><a href="./user?action=login" class="btn_s">로그인</a></li>
-				<li><a href="./user?action=join" class="btn_s">회원가입</a></li>
-			</ul>
-			<%} %>
-			
-		</div>
+		<!-- header -->
+		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
 		<!-- //header -->
 
 		<div id="nav">
@@ -80,7 +60,7 @@
 							<!-- 아이디 -->
 							<div class="form-group">
 								<label class="form-text" for="input-uid">아이디</label> 
-								<span class="text-large bold"><%=authUser.getId() %></span>
+								<span class="text-large bold">${authUser.id}</span>
 							</div>
 	
 							<!-- 비밀번호 -->
@@ -92,25 +72,26 @@
 							<!-- 이메일 -->
 							<div class="form-group">
 								<label class="form-text" for="input-name">이름</label> 
-								<input type="text" id="input-name" name="name" value="<%=authUser.getName() %>" placeholder="이름을 입력하세요">
+								<input type="text" id="input-name" name="name" value="${authUser.name}" placeholder="이름을 입력하세요">
 							</div>
 	
 							<!-- //나이 -->
 							<div class="form-group">
 								<span class="form-text">성별</span> 
-								<% if (authUser.getGender().equals("male")) {%>
-									<label for="rdo-male">남</label> 
-									<input type="radio" id="rdo-male" name="gender" value="male" checked="checked"> 
-									
-									<label for="rdo-female">여</label> 
-									<input type="radio" id="rdo-female" name="gender" value="female" > 
-								<%} else {%>
-									<label for="rdo-male">남</label> 
-									<input type="radio" id="rdo-male" name="gender" value="male"> 
-									
-									<label for="rdo-female">여</label> 
-									<input type="radio" id="rdo-female" name="gender" value="female" checked="checked" > 
-								<%} %>
+								<c:choose>
+									<c:when test="${authUser.gender == male }">
+										<label for="rdo-male">남</label> 
+										<input type="radio" id="rdo-male" name="gender" value="male" checked="checked"> 
+										<label for="rdo-female">여</label> 
+										<input type="radio" id="rdo-female" name="gender" value="female" > 
+									</c:when>
+									<c:when test="${authUser.gender == female }">
+										<label for="rdo-male">남</label> 
+										<input type="radio" id="rdo-male" name="gender" value="male"> 
+										<label for="rdo-female">여</label> 
+										<input type="radio" id="rdo-female" name="gender" value="female" checked="checked" > 
+									</c:when>
+								</c:choose>
 							</div>
 	
 							<!-- 버튼영역 -->
@@ -132,9 +113,7 @@
 		</div>
 		<!-- //container  -->
 
-		<div id="footer">
-			Copyright ⓒ 2022 이준규. All right reserved
-		</div>
+		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>
 		<!-- //footer -->
 		
 	</div>

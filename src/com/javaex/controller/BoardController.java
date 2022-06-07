@@ -11,7 +11,6 @@ import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.UserDao;
 import com.javaex.util.WebUtil;
-import com.javaex.vo.UserVo;
 
 @WebServlet("/board")
 public class BoardController extends HttpServlet {
@@ -22,8 +21,7 @@ public class BoardController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		UserDao userDao = new UserDao();
-		UserVo userVo = new UserVo();
-		HttpSession session;
+		HttpSession session = null;
 		if (action.equals("list")) {
 			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 
@@ -35,7 +33,7 @@ public class BoardController extends HttpServlet {
 		} else if (action.equals("delete")) {
 			int no = Integer.parseInt(request.getParameter("no"));
 			String pw = request.getParameter("pw");
-			if( pw.equals(userDao.Select(no).pw)) {
+			if( pw.equals(userDao.Select(no).getPw())) {
 				userDao.Delete(no);
 			}
 		}
