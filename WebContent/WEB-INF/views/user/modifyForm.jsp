@@ -79,13 +79,13 @@
 							<div class="form-group">
 								<span class="form-text">성별</span> 
 								<c:choose>
-									<c:when test="${authUser.gender == male }">
+									<c:when test="${authUser.gender == 'male' }">
 										<label for="rdo-male">남</label> 
 										<input type="radio" id="rdo-male" name="gender" value="male" checked="checked"> 
 										<label for="rdo-female">여</label> 
 										<input type="radio" id="rdo-female" name="gender" value="female" > 
 									</c:when>
-									<c:when test="${authUser.gender == female }">
+									<c:when test="${authUser.gender == 'female' }">
 										<label for="rdo-male">남</label> 
 										<input type="radio" id="rdo-male" name="gender" value="male"> 
 										<label for="rdo-female">여</label> 
