@@ -22,8 +22,7 @@
 			<h2>게시판</h2>
 			<ul>
 				<li><a href="./user?action=modify">회원정보</a></li>
-				<li><a href="./user?action=login">로그인</a></li>
-				<li><a href="./user?action=join">회원가입</a></li>
+				<li><a href="./user?action=logout">로그아웃</a></li>
 			</ul>
 		</c:when>
 	</c:choose>
