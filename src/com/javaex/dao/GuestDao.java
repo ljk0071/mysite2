@@ -51,13 +51,13 @@ public class GuestDao {
 		this.getConnection();
 		try {
 		
-			String query = "create table guestbook (\r\n"
-					+ "    no number(10)\r\n"
-					+ "    name varchar2(80)\r\n"
-					+ "    ,password varchar2(20)\r\n"
-					+ "    ,content varchar2(2000)\r\n"
-					+ "    ,reg_gate date\r\n"
-					+ "    ,primary key(no)";
+			String query = "create table guestbook ( "
+					+ "    no number "
+					+ "    ,name varchar2(80) "
+					+ "    ,password varchar2(20) "
+					+ "    ,content varchar2(2000) "
+					+ "    ,reg_date date "
+					+ "    ,primary key(no)) ";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.executeUpdate();
@@ -87,9 +87,9 @@ public class GuestDao {
 		this.getConnection();
 		try {
 		
-			String query = "create sequence seq_guestbook_no\r\n"
-					+ "increment by 1\r\n"
-					+ "start with 1\r\n"
+			String query = "create sequence seq_guestbook_no "
+					+ "increment by 1 "
+					+ "start with 1 "
 					+ "nocache";
 			
 			pstmt = conn.prepareStatement(query);
@@ -106,7 +106,7 @@ public class GuestDao {
 		this.getConnection();
 		try {
 		
-			String query = "drop sequence seq_guestbook_no\r\n";
+			String query = "drop sequence seq_guestbook_no ";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.executeUpdate();
@@ -121,14 +121,13 @@ public class GuestDao {
 	public String Insert(GuestVo guestVo) {
 		getConnection();
 		try {
-			String query = "insert into guestbook \r\n"
-					+ "values(seq_guestbook_no.nextval, ?, ?, ?, ?)";
+			String query = "insert into guestbook  "
+					+ "values(seq_guestbook_no.nextval, ?, ?, ?, sysdate)";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, guestVo.name);
 			pstmt.setString(2, guestVo.password);
 			pstmt.setString(3, guestVo.content);
-			pstmt.setString(4, guestVo.regDate);
 
 			count = pstmt.executeUpdate(); 
 		} catch (SQLException e) {
@@ -176,12 +175,12 @@ public class GuestDao {
 		List<GuestVo> guestList = new ArrayList<GuestVo>();
 		getConnection();
 		try {
-			String query = "select no\r\n"
-					+ "    ,name\r\n"
-					+ "    ,password\r\n"
-					+ "    ,content\r\n"
-					+ "    ,reg_date\r\n"
-					+ "from guestbook\r\n"
+			String query = "select no "
+					+ "    ,name "
+					+ "    ,password "
+					+ "    ,content "
+					+ "    ,reg_date "
+					+ "from guestbook "
 					+ "order by no";
 
 			pstmt = conn.prepareStatement(query);
@@ -205,7 +204,7 @@ public class GuestDao {
 	}
 	
 	public GuestVo Select(int guestNo) {
-		GuestVo guestVo = new GuestVo();
+		GuestVo guestVo = null;
 		getConnection();
 		try {
 			String query = "";

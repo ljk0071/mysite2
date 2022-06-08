@@ -50,13 +50,13 @@ public class UserDao {
 		this.getConnection();
 		try {
 		
-			String query = "create table users (\r\n"
-					+ "    no number\r\n"
-					+ "    ,id varchar2(20) unique not null\r\n"
-					+ "    ,password varchar2(20) not null\r\n"
-					+ "    ,name varchar2(20)\r\n"
-					+ "    ,gender varchar2(10)\r\n"
-					+ "    ,primary key(no)\r\n)";
+			String query = "create table users ( "
+					+ "    no number "
+					+ "    ,id varchar2(20) unique not null "
+					+ "    ,password varchar2(20) not null "
+					+ "    ,name varchar2(20) "
+					+ "    ,gender varchar2(10) "
+					+ "    ,primary key(no) )";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.executeUpdate();
@@ -86,10 +86,10 @@ public class UserDao {
 		this.getConnection();
 		try {
 		
-			String query = "create sequence seq_users_no\r\n"
-					+ "increment by 1\r\n"
-					+ "start with 1\r\n"
-					+ "nocache";
+			String query = "create sequence seq_users_no "
+					+ "increment by 1 "
+					+ "start with 1 "
+					+ "nocache ";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.executeUpdate();
@@ -105,7 +105,7 @@ public class UserDao {
 		this.getConnection();
 		try {
 		
-			String query = "drop sequence seq_users_no\r\n";
+			String query = "drop sequence seq_users_no ";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.executeUpdate();
@@ -120,7 +120,7 @@ public class UserDao {
 	public String Insert(UserVo userVo) {
 		getConnection();
 		try {
-			String query = "insert into users \r\n"
+			String query = "insert into users  "
 					+ "values(seq_users_no.nextval, ?, ?, ?, ?)";
 			
 			pstmt = conn.prepareStatement(query);
@@ -175,12 +175,12 @@ public class UserDao {
 		List<UserVo> userList = new ArrayList<UserVo>();
 		getConnection();
 		try {
-			String query = "select no\r\n"
-					+ "    ,id\r\n"
-					+ "    ,password\r\n"
-					+ "    ,name\r\n"
-					+ "    ,gender\r\n"
-					+ "from users\r\n"
+			String query = "select no "
+					+ "    ,id "
+					+ "    ,password "
+					+ "    ,name "
+					+ "    ,gender "
+					+ "from users "
 					+ "order by no";
 
 			pstmt = conn.prepareStatement(query);
@@ -207,12 +207,12 @@ public class UserDao {
 		UserVo userVo = null;
 		getConnection();
 		try {
-			String query = "select no\r\n"
-					+ "    ,id\r\n"
-					+ "    ,password\r\n"
-					+ "    ,name\r\n"
-					+ "    ,gender\r\n"
-					+ "from users\r\n"
+			String query = "select no "
+					+ "    ,id "
+					+ "    ,password "
+					+ "    ,name "
+					+ "    ,gender "
+					+ "from users "
 					+ "where no = ? ";
 
 			pstmt = conn.prepareStatement(query);
@@ -238,12 +238,12 @@ public class UserDao {
 		UserVo userVo = null;
 		getConnection();
 		try {
-			String query = "select no\r\n"
-					+ "    ,id\r\n"
-					+ "    ,password\r\n"
-					+ "    ,name\r\n"
-					+ "    ,gender\r\n"
-					+ "from users\r\n"
+			String query = "select no "
+					+ "    ,id "
+					+ "    ,password "
+					+ "    ,name "
+					+ "    ,gender "
+					+ "from users "
 					+ "where id = ? "
 					+ "and password = ? ";
 

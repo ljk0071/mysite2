@@ -5,11 +5,10 @@ public class GuestVo {
 	public String name, password, content ,regDate;
 	public int guestNo;
 	
-	public GuestVo(String name, String password, String content, String regDate) {
+	public GuestVo(String name, String password, String content) {
 		this.name = name;
 		this.password =  password;
 		this.content = content;
-		this.regDate = regDate;
 	}
 	public GuestVo(int guestNo, String name, String password, String content, String regDate) {
 		this.guestNo = guestNo;
@@ -17,9 +16,6 @@ public class GuestVo {
 		this.password =  password;
 		this.content = content;
 		this.regDate = regDate;
-	}
-	public GuestVo() {
-		
 	}
 
 	public String getRegDate() {

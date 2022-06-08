@@ -74,7 +74,7 @@ public class BoardDao {
 	public String DropTable() {
 		this.getConnection();
 		try {
-			String query = "drop table users ";
+			String query = "drop table board ";
 			
 			pstmt = conn.prepareStatement(query);
 			
@@ -92,7 +92,7 @@ public class BoardDao {
 			String query = "create sequence seq_board_no "
 					+ "increment by 1 "
 					+ "start with 1 "
-					+ "nocache";
+					+ "nocache ";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.executeUpdate();
