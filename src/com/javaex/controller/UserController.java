@@ -23,7 +23,7 @@ public class UserController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		UserDao userDao = new UserDao();
+		UserDao uDao = new UserDao();
 		String action = request.getParameter("action");
 		HttpSession session = null;
 		if (action.equals("login")) {
@@ -39,7 +39,7 @@ public class UserController extends HttpServlet {
 			String gender = request.getParameter("gender");
 
 			UserVo userVo = new UserVo(id, pw, name, gender);
-			userDao.Insert(userVo);
+			uDao.Insert(userVo);
 
 			WebUtil.forward(request, response, "/WEB-INF/views/user/joinOk.jsp");
 
@@ -47,7 +47,7 @@ public class UserController extends HttpServlet {
 			String id = request.getParameter("id");
 			String pw = request.getParameter("pw");
 			try {
-				UserVo authUser = userDao.Select(id, pw);
+				UserVo authUser = uDao.Select(id, pw);
 				if (authUser.getId().equals(id)) {
 					if(authUser.getPw().equals(pw)) {
 						session = request.getSession();
@@ -57,7 +57,7 @@ public class UserController extends HttpServlet {
 					}
 				}
 			} catch (NullPointerException e) {
-				WebUtil.forward(request, response, "/WEB-INF/views/user/loginForm.jsp");
+				WebUtil.redirect(request, response, "./user?action=login");
 			}
 
 		} else if ("logout".equals(action)) {
@@ -67,15 +67,11 @@ public class UserController extends HttpServlet {
 
 		} else if ("modify".equals(action)) {
 			session = request.getSession();
-			try {
-				UserVo authUser = (UserVo)session.getAttribute("authUser");
-				int no = authUser.getNo();
-				UserVo authVo = userDao.Select(no);
-				session.setAttribute("authUser", authVo);
-				WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
-			} catch (NullPointerException e) {
-				WebUtil.forward(request, response, "/WEB-INF/views/user/loginForm.jsp");
-			}
+			UserVo authUser = (UserVo)session.getAttribute("authUser");
+			int no = authUser.getNo();
+			UserVo authVo = uDao.Select(no);
+			session.setAttribute("authUser", authVo);
+			WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
 
 		} else if ("update".equals(action)) {
 			session = request.getSession();
@@ -85,14 +81,14 @@ public class UserController extends HttpServlet {
 			String name = request.getParameter("name");
 			String gender = request.getParameter("gender");
 			UserVo userVo = new UserVo(no, pw, name, gender);
-			userDao.Update(userVo);
+			uDao.Update(userVo);
 			session = request.getSession();
 			session.removeAttribute("authUser");
 			session.setAttribute("authUser", userVo);
-			WebUtil.forward(request, response, "./main");
+			WebUtil.redirect(request, response, "./main");
 
 		} else {
-			WebUtil.forward(request, response, "/WEB-INF/views/main/index.jsp");
+			WebUtil.redirect(request, response, "./main");
 		}
 
 	}
