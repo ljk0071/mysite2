@@ -62,6 +62,7 @@ public class BoardController extends HttpServlet {
 		} else if ("modify".equals(action)) {
 			int no = Integer.parseInt(request.getParameter("no"));
 			BoardVo bVo = bDao.Select(no);
+			bVo.setContent(bVo.getContent().replace("<br>", "\r\n"));
 			UserDao uDao = new UserDao();
 			request.setAttribute("uDao", uDao);
 			request.setAttribute("bVo", bVo);
