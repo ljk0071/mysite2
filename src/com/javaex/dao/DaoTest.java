@@ -3,15 +3,15 @@ package com.javaex.dao;
 import java.util.List;
 
 import com.javaex.vo.BoardVo;
-import com.javaex.vo.GuestVo;
+import com.javaex.vo.GuestVo2;
 import com.javaex.vo.UserVo;
 
 public class DaoTest {
 	public static void main(String[] args) {
 		BoardDao bDao = new BoardDao();
-		GuestDao gDao = new GuestDao();
+		GuestDao2 gDao = new GuestDao2();
 		UserDao uDao = new UserDao();
-		GuestVo gVo = new GuestVo("name", "pw", "content");
+		GuestVo2 gVo = new GuestVo2("name", "pw", "content");
 		BoardVo bVo = new BoardVo("title", "content", 1);
 		UserVo uVo = new UserVo("id", "pw", "name", "gender");
 		
@@ -30,7 +30,7 @@ public class DaoTest {
 		System.out.println(uDao.Insert(uVo));
 		System.out.println(bDao.Insert(bVo));
 		System.out.println(gDao.Insert(gVo));
-		List<GuestVo> gList = gDao.SelectAll();
+		List<GuestVo2> gList = gDao.SelectAll();
 		List<BoardVo> bList = bDao.SelectAll();
 		List<UserVo> uList = uDao.SelectAll();
 		for(int i=0;i<gList.size();i++) {

@@ -17,42 +17,40 @@ public class GuestVo {
 		this.content = content;
 		this.regDate = regDate;
 	}
-
-	public String getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-
 	public String getName() {
 		return name;
 	}
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 	public String getPassword() {
 		return password;
 	}
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 	public String getContent() {
 		return content;
 	}
-
 	public void setContent(String content) {
 		this.content = content;
 	}
-
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+	public int getGuestNo() {
+		return guestNo;
+	}
+	public void setGuestNo(int guestNo) {
+		this.guestNo = guestNo;
+	}
 	@Override
 	public String toString() {
-		return "GuestVo [name=" + name + ", password=" + password + ", content=" + content + "]";
+		return "GuestVo [name=" + name + ", password=" + password + ", content=" + content + ", regDate=" + regDate
+				+ ", guestNo=" + guestNo + "]";
 	}
 	
 	

@@ -13,7 +13,6 @@
 <body>
 	<div id="wrap">
 
-		<div id="header" class="clearfix">
 			<!-- header -->
 		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
@@ -23,13 +22,7 @@
 		<!-- //nav -->
 
 		<div id="container" class="clearfix">
-			<div id="aside">
-				<h2>방명록</h2>
-				<ul>
-					<li>일반방명록</li>
-					<li>ajax방명록</li>
-				</ul>
-			</div>
+			<c:import url="/WEB-INF/views/include/aside.jsp"></c:import>
 			<!-- //aside -->
 
 			<div id="content">
@@ -58,13 +51,13 @@
 							</colgroup>
 							<tr>
 								<td>비밀번호</td>
-								<td><input type="password" name="pw"></td>
+								<td><input type="password" name="pw" value=""></td>
 								<td class="text-left"><button type="submit">삭제</button></td>
 								<td><a href="./gc?action=addList">[메인으로 돌아가기]</a></td>
 							</tr>
 						</table>
-						<input type='hidden' name="" value="${param.no}">
-						<input type='hidden' name="" value="delete">
+						<input type='hidden' name="no" value="${param.no}">
+						<input type='hidden' name="action" value="delete">
 					</form>
 					
 				</div>
