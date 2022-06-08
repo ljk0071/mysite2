@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.javaex.vo.UserVo;
+import com.javaex.vo.BoardVo;
 
-public class UserDao {
+public class BoardDao {
 	private Connection conn = null;
 	private PreparedStatement pstmt = null;
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
@@ -50,13 +50,16 @@ public class UserDao {
 		this.getConnection();
 		try {
 		
-			String query = "create table users (\r\n"
-					+ "    no number\r\n"
-					+ "    ,id varchar2(20) unique not null\r\n"
-					+ "    ,password varchar2(20) not null\r\n"
-					+ "    ,name varchar2(20)\r\n"
-					+ "    ,gender varchar2(10)\r\n"
-					+ "    ,primary key(no)\r\n)";
+			String query = "create table board( "
+					+ "    no number "
+					+ "    ,title varchar2(500) not null "
+					+ "    ,content varchar2(4000) "
+					+ "    ,hit number "
+					+ "    ,reg_date date not null "
+					+ "    ,user_no number not null "
+					+ "    ,primary key (no) "
+					+ "    ,constraint board_fk foreign key (user_no) "
+					+ "    references users(no) )";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.executeUpdate();
@@ -65,7 +68,7 @@ public class UserDao {
 			System.out.println("error:" + e);
 		}
 		this.Close();
-		return "users 테이블 생성 완료";
+		return "board 테이블 생성 완료";
 	}
 	
 	public String DropTable() {
@@ -79,16 +82,16 @@ public class UserDao {
 		}catch (SQLException e) {
 			System.out.println("error:" + e);
 		}
-		return "users 테이블 삭제 완료";
+		return "board 테이블 삭제 완료";
 	}
 	
 	public String CreateSeq() {
 		this.getConnection();
 		try {
 		
-			String query = "create sequence seq_users_no\r\n"
-					+ "increment by 1\r\n"
-					+ "start with 1\r\n"
+			String query = "create sequence seq_board_no "
+					+ "increment by 1 "
+					+ "start with 1 "
 					+ "nocache";
 			
 			pstmt = conn.prepareStatement(query);
@@ -98,14 +101,14 @@ public class UserDao {
 			System.out.println("error:" + e);
 		}
 		this.Close();
-		return "users_no 시퀀스 생성 완료";
+		return "board_no 시퀀스 생성 완료";
 	}
 	
 	public String DropSeq() {
 		this.getConnection();
 		try {
 		
-			String query = "drop sequence seq_users_no\r\n";
+			String query = "drop sequence seq_board_no ";
 			
 			pstmt = conn.prepareStatement(query);
 			pstmt.executeUpdate();
@@ -114,20 +117,19 @@ public class UserDao {
 			System.out.println("error:" + e);
 		}
 		this.Close();
-		return "users_no 시퀀스 삭제 완료";
+		return "board_no 시퀀스 삭제 완료";
 	}
 	
-	public String Insert(UserVo userVo) {
+	public String Insert(BoardVo bVo) {
 		getConnection();
 		try {
-			String query = "insert into users \r\n"
-					+ "values(seq_users_no.nextval, ?, ?, ?, ?)";
+			String query = "insert into board(no, title, content, reg_date, user_no) "
+					+ "values(seq_board_no.nextval, ?, ?, sysdate, ?)";
 			
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, userVo.getId());
-			pstmt.setString(2, userVo.getPw());
-			pstmt.setString(3, userVo.getName());
-			pstmt.setString(4, userVo.getGender());
+			pstmt.setString(1, bVo.getTitle());
+			pstmt.setString(2, bVo.getContent());
+			pstmt.setInt(3, bVo.getUserNo());
 
 			count = pstmt.executeUpdate(); 
 		} catch (SQLException e) {
@@ -137,31 +139,15 @@ public class UserDao {
 		return count + "건이 등록 되었습니다.";
 	}
 	
-	public String DeleteAll() {
+	public String Delete(int boardNo) {
 		getConnection();
 		try {
 			String query = "";
-			query += "delete from users ";
-
-			pstmt = conn.prepareStatement(query);
-
-			count = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		Close();
-		return count + "건이 삭제 되었습니다.";
-	}
-
-	public String Delete(int userNo) {
-		getConnection();
-		try {
-			String query = "";
-			query += "delete from users ";
+			query += "delete from board ";
 			query += "where no = ?";
 
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, userNo);
+			pstmt.setInt(1, boardNo);
 
 			count = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -171,121 +157,90 @@ public class UserDao {
 		return count + "건이 삭제 되었습니다.";
 	}
 	
-	public List<UserVo> SelectAll() {
-		List<UserVo> userList = new ArrayList<UserVo>();
+	public List<BoardVo> SelectAll() {
+		List<BoardVo> bList = new ArrayList<BoardVo>();
 		getConnection();
 		try {
-			String query = "select no\r\n"
-					+ "    ,id\r\n"
-					+ "    ,password\r\n"
-					+ "    ,name\r\n"
-					+ "    ,gender\r\n"
-					+ "from users\r\n"
-					+ "order by no";
+			String query = "select no "
+					+ "    ,title "
+					+ "    ,content "
+					+ "    ,hit "
+					+ "    ,reg_date "
+					+ "    ,user_no "
+					+ "from board "
+					+ "order by no desc";
 
 			pstmt = conn.prepareStatement(query);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				int userNo = rs.getInt(1);
-				String id = rs.getString(2);
-				String pw = rs.getString(3);
-				String name = rs.getString(4);
-				String gender = rs.getString(5);
-				UserVo userVo = new UserVo(userNo, id, pw, name, gender);
-				userList.add(userVo);
+				int no = rs.getInt(1);
+				String title = rs.getString(2);
+				String content = rs.getString(3);
+				int hit = rs.getInt(4);
+				String regDate = rs.getString(5);
+				int userNo = rs.getInt(6);
+				BoardVo bVo = new BoardVo(no, title, content, hit, regDate, userNo);
+				bList.add(bVo);
 			}
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		}
 		Close();
-		return userList;
+		return bList;
 	}
 	
-	public UserVo Select(int userNo) {
-		UserVo userVo = null;
+	public BoardVo Select(int boardNo) {
+		BoardVo bVo = null;
 		getConnection();
 		try {
-			String query = "select no\r\n"
-					+ "    ,id\r\n"
-					+ "    ,password\r\n"
-					+ "    ,name\r\n"
-					+ "    ,gender\r\n"
-					+ "from users\r\n"
+			String query = "select no "
+					+ "    ,title "
+					+ "    ,content "
+					+ "    ,hit "
+					+ "    ,reg_date "
+					+ "    ,user_no "
+					+ "from board "
 					+ "where no = ? ";
 
 			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, userNo);
+			pstmt.setInt(1, boardNo);
 
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				int userNo2 = rs.getInt(1);
-				String id = rs.getString(2);
-				String pw = rs.getString(3);
-				String name = rs.getString(4);
-				String gender = rs.getString(5);
-				userVo = new UserVo(userNo2, id, pw, name, gender);
+				int no = rs.getInt(1);
+				String title = rs.getString(2);
+				String content = rs.getString(3);
+				int hit = rs.getInt(4);
+				String regDate = rs.getString(5);
+				int userNo = rs.getInt(6);
+				bVo = new BoardVo(no, title, content, hit, regDate, userNo);
 			}
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
 		}
 		Close();
-		return userVo;
+		return bVo;
 	}
-	public UserVo Select(String id, String pw) {
-		UserVo userVo = null;
-		getConnection();
-		try {
-			String query = "select no\r\n"
-					+ "    ,id\r\n"
-					+ "    ,password\r\n"
-					+ "    ,name\r\n"
-					+ "    ,gender\r\n"
-					+ "from users\r\n"
-					+ "where id = ? "
-					+ "and password = ? ";
-
-			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, id);
-			pstmt.setString(2, pw);
-
-			rs = pstmt.executeQuery();
-
-			while (rs.next()) {
-				int userNo2 = rs.getInt(1);
-				String id2 = rs.getString(2);
-				String pw2 = rs.getString(3);
-				String name = rs.getString(4);
-				String gender = rs.getString(5);
-				userVo = new UserVo(userNo2, id2, pw2, name, gender);
-			}
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		Close();
-		return userVo;
-	}
-	public void Update(UserVo userVo) {
+	
+	public void Update(String title, String content, int boardNo) {
 		try {
 			getConnection();
 			// 3. SQL문 준비 / 바인딩 / 실행
 
 			// SQL문 준비
-			String query = "";
-			query += "update users ";
-			query += "set name = ? ";
-			query += ",password = ? ";
-			query += ",gender = ? ";
-			query += "where no = ? ";
+			String query = "update board "
+					+ "set title = ? "
+					+ "    ,content = ? "
+					+ "where no = ?";
 
 			// 바인딩
 			pstmt = conn.prepareStatement(query); // 문자열을 쿼리로 만들기
-			pstmt.setString(1, userVo.getName());
-			pstmt.setString(2, userVo.getPw());
-			pstmt.setString(3, userVo.getGender());
-			pstmt.setInt(4, userVo.getNo());
+			pstmt.setString(1,title);
+			pstmt.setString(2, content);
+			pstmt.setInt(3, boardNo);
 
 			// 실행
 			count = pstmt.executeUpdate(); // 쿼리문 실행 -->리턴값으로 성공갯수
@@ -298,4 +253,30 @@ public class UserDao {
 		Close();
 	}
 	
+	public void Update(int hit, int boardNo) {
+		try {
+			getConnection();
+			// 3. SQL문 준비 / 바인딩 / 실행
+
+			// SQL문 준비
+			String query = "update board "
+					+ "set hit = ? "
+					+ "where no = ?";
+
+			// 바인딩
+			pstmt = conn.prepareStatement(query); // 문자열을 쿼리로 만들기
+			pstmt.setInt(1, hit);
+			pstmt.setInt(2, boardNo);
+
+			// 실행
+			count = pstmt.executeUpdate(); // 쿼리문 실행 -->리턴값으로 성공갯수
+
+			// 4.결과처리
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		Close();
+	}
+
 }

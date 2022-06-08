@@ -15,7 +15,7 @@
 
 		
 		<!-- header -->
-		<c:import url="/WEB-INF/views/includes/header.jsp"></c:import>
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
 
 		<div id="nav">
@@ -54,7 +54,7 @@
 							<br>
 							(자유롭게 꾸며보세요!!)<br>
 							<br><br>
-							<a class="" href="">[방명록에 글 남기기]</a>
+							<a class="" href="./board?action=list">[방명록에 글 남기기]</a>
 						</p>	
 					</div>
 					<!-- //greetings -->
@@ -72,7 +72,7 @@
 		<!-- //container -->
 		
 		
-		<c:import url="/WEB-INF/views/includes/footer.jsp"></c:import>
+		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 		<!-- //footer -->
 
 	</div>

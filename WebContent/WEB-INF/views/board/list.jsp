@@ -1,9 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ page import="com.javaex.vo.UserVo" %>
-<% 
-	UserVo authUser = (UserVo)session.getAttribute("authUser");	
-%>    
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+      
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,14 +11,13 @@
 
 </head>
 
-
 <body>
 	<div id="wrap">
 
 		<!-- header -->
-		<jsp:include page="/WEB-INF/views/includes/header.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
-		
+
 		<div id="nav">
 			<ul class="clearfix">
 				<li><a href="">입사지원서</a></li>
@@ -77,57 +73,29 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="">[삭제]</a></td>
-								</tr>
-								<tr>
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="">[삭제]</a></td>
-								</tr>
-								<tr>
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="">[삭제]</a></td>
-								</tr>
-								<tr>
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="">[삭제]</a></td>
-								</tr>
-								<tr class="last">
-									<td>123</td>
-									<td class="text-left"><a href="#">게시판 게시글입니다.</a></td>
-									<td>정우성</td>
-									<td>1232</td>
-									<td>2020-12-23</td>
-									<td><a href="./board?action=delete">[삭제]</a></td>
-								</tr>
+								<c:forEach items="${bList}" var="bVo" varStatus="status">
+									<tr>
+										<td>${bVo.no}</td>
+										<td><a href="./board?action=read&no=${bVo.no}&hit=${bVo.hit}">${bVo.title}</a></td>
+										<td>${uDao.Select(bVo.userNo).name}</td>
+										<td>${bVo.hit}</td>
+										<td>${bVo.regDate}</td>
+										<c:if test="${authUser.no == bVo.userNo}">
+											<td><a href="./board?action=delete&no=${bVo.no}">[삭제]</a></td>
+										</c:if>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 			
 						<div id="paging">
 							<ul>
 								<li><a href="">◀</a></li>
-								<li><a href="">1</a></li>
+								<li class="active"><a href="">1</a></li>
 								<li><a href="">2</a></li>
 								<li><a href="">3</a></li>
 								<li><a href="">4</a></li>
-								<li class="active"><a href="">5</a></li>
+								<li><a href="">5</a></li>
 								<li><a href="">6</a></li>
 								<li><a href="">7</a></li>
 								<li><a href="">8</a></li>
@@ -139,8 +107,9 @@
 							
 							<div class="clear"></div>
 						</div>
-						<a id="btn_write" href="./board?action=writeform">글쓰기</a>
-					
+						<c:if test="${authUser != null}">
+							<a id="btn_write" href="./board?action=writeform">글쓰기</a>
+						</c:if>
 					</div>
 					<!-- //list -->
 				</div>
@@ -152,7 +121,7 @@
 		<!-- //container  -->
 		
 
-		<jsp:include page="/WEB-INF/views/includes/footer.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 		<!-- //footer -->
 	</div>
 	<!-- //wrap -->
