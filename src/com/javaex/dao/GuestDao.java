@@ -137,22 +137,6 @@ public class GuestDao {
 		return count + "건이 등록 되었습니다.";
 	}
 	
-	public String DeleteAll() {
-		getConnection();
-		try {
-			String query = "";
-			query += "delete from guestbook ";
-
-			pstmt = conn.prepareStatement(query);
-
-			count = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		Close();
-		return count + "건이 삭제 되었습니다.";
-	}
-
 	public String Delete(int guestNo) {
 		getConnection();
 		try {

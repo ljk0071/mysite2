@@ -11,8 +11,8 @@ public class DaoTest {
 		BoardDao bDao = new BoardDao();
 		GuestDao gDao = new GuestDao();
 		UserDao uDao = new UserDao();
-		BoardVo bVo = new BoardVo("title", "content", 1);
 		GuestVo gVo = new GuestVo("name", "pw", "content");
+		BoardVo bVo = new BoardVo("title", "content", 1);
 		UserVo uVo = new UserVo("id", "pw", "name", "gender");
 		
 		System.out.println(bDao.DropSeq());
@@ -38,5 +38,18 @@ public class DaoTest {
 			System.out.println(bList.get(i).toString());
 			System.out.println(uList.get(i).toString());
 		}
+		BoardVo bVo2 = new BoardVo(1, "title2", "content2");
+		UserVo uVo2 = new UserVo(1, "id2", "pw2", "name2", "gender2");
+		System.out.println(uDao.Update(uVo2));
+		System.out.println(bDao.Update(bVo2));
+		List<BoardVo> bList2 = bDao.SelectAll();
+		List<UserVo> uList2 = uDao.SelectAll();
+		for(int i=0;i<bList2.size();i++) {
+			System.out.println(bList2.get(i).toString());
+			System.out.println(uList2.get(i).toString());
+		}
+		System.out.println(gDao.Delete(1));
+		System.out.println(bDao.Delete(1));
+		System.out.println(uDao.Delete(1));
 	}
 }

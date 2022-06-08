@@ -267,18 +267,17 @@ public class UserDao {
 		Close();
 		return userVo;
 	}
-	public void Update(UserVo userVo) {
+	public String Update(UserVo userVo) {
 		try {
 			getConnection();
 			// 3. SQL문 준비 / 바인딩 / 실행
 
 			// SQL문 준비
-			String query = "";
-			query += "update users ";
-			query += "set name = ? ";
-			query += ",password = ? ";
-			query += ",gender = ? ";
-			query += "where no = ? ";
+			String query = "update users "
+					+ "set name = ? "
+					+ ",password = ? "
+					+ ",gender = ? "
+					+ "where no = ? ";
 
 			// 바인딩
 			pstmt = conn.prepareStatement(query); // 문자열을 쿼리로 만들기
@@ -296,6 +295,7 @@ public class UserDao {
 			System.out.println("error:" + e);
 		}
 		Close();
+		return count + "건이 수정 되었습니다.";
 	}
 	
 }
