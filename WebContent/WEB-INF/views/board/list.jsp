@@ -48,7 +48,7 @@
 							<div class="form-group text-right">
 								<input type="text" name="title" value="">
 								<button type="submit" id=btn_search>검색</button>
-								<input type="hidden" name="action" value="search">
+								<input type="hidden" name="action" value="list">
 							</div>
 						</form>
 						<table >

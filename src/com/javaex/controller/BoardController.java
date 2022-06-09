@@ -28,12 +28,31 @@ public class BoardController extends HttpServlet {
 		HttpSession session = null;
 		
 		if (action.equals("list")) {
-			session = request.getSession();
+			String title = request.getParameter("title");
 			List<BoardVo> bList = bDao.SelectAll();
-			UserDao uDao = new UserDao();
-			session.setAttribute("bList", bList);
-			session.setAttribute("uDao", uDao);
-			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
+			if ( title == null ) {
+				session = request.getSession();
+				UserDao uDao = new UserDao();
+				session.setAttribute("bList", bList);
+				session.setAttribute("uDao", uDao);
+				WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
+			} else {
+				List<BoardVo> searchList = new ArrayList<BoardVo>();
+				for(BoardVo bVo : bList) {
+					if( bVo.getTitle().contains(title) ){
+						searchList.add(bVo);
+					}
+				}
+				if (searchList.size() > 0) {
+					UserDao uDao = new UserDao();
+					request.setAttribute("searchList", searchList);
+					request.setAttribute("uDao", uDao);
+					WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
+				} else {
+					WebUtil.redirect(request, response, "./board?action=list");
+				}
+				
+			}
 
 		} else if ("writeform".equals(action)) {
 			WebUtil.forward(request, response, "/WEB-INF/views/board/writeForm.jsp");
@@ -80,21 +99,6 @@ public class BoardController extends HttpServlet {
 		} else if ("delete".equals(action)) {
 			int no = Integer.parseInt(request.getParameter("no"));
 			bDao.Delete(no);
-			WebUtil.redirect(request, response, "./board?action=list");
-		} else if ("search".equals(action)) {
-			String title = request.getParameter("title");
-			List<BoardVo> bList = new ArrayList<BoardVo>();
-			bList = bDao.SelectAll();
-			for(BoardVo bVo : bList) {
-				if( bVo.getTitle().contains(title) ){
-					List<BoardVo> searchList = new ArrayList<BoardVo>();
-					searchList.add(bVo);
-					UserDao uDao = new UserDao();
-					request.setAttribute("searchList", searchList);
-					request.setAttribute("uDao", uDao);
-					WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
-				}
-			}
 			WebUtil.redirect(request, response, "./board?action=list");
 		} else {
 			WebUtil.redirect(request, response, "./board?action=list");

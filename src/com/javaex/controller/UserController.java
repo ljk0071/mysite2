@@ -53,7 +53,6 @@ public class UserController extends HttpServlet {
 						session = request.getSession();
 						session.setAttribute("authUser", authUser);
 						WebUtil.redirect(request, response, "./main");
-						
 					}
 				}
 			} catch (NullPointerException e) {
