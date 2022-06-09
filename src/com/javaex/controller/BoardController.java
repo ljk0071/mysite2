@@ -25,7 +25,7 @@ public class BoardController extends HttpServlet {
 		String action = request.getParameter("action");
 		BoardDao bDao = new BoardDao();
 		
-		if (action.equals("list")) {
+		if ("list".equals(action)) {
 			String title = request.getParameter("title");
 			List<BoardVo> bList = bDao.SelectAll();
 			if ( title == null ) {

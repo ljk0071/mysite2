@@ -259,35 +259,7 @@ public class BoardDao {
 		Close();
 		return count + "건이 수정 되었습니다.";
 	}
-	public String Update(BoardVo bVo) {
-		try {
-			getConnection();
-			// 3. SQL문 준비 / 바인딩 / 실행
-
-			// SQL문 준비
-			String query = "update board "
-					+ "set title = ? "
-					+ "    ,content = ? "
-					+ "where no = ?";
-
-			// 바인딩
-			pstmt = conn.prepareStatement(query); // 문자열을 쿼리로 만들기
-			pstmt.setString(1, bVo.getTitle());
-			pstmt.setString(2, bVo.getContent());
-			pstmt.setInt(3, bVo.getNo());
-
-			// 실행
-			count = pstmt.executeUpdate(); // 쿼리문 실행 -->리턴값으로 성공갯수
-
-			// 4.결과처리
-
-		} catch (SQLException e) {
-			System.out.println("error:" + e);
-		}
-		Close();
-		return count + "건이 수정 되었습니다.";
-	}
-	
+		
 	public String UpdateHit(int boardNo) {
 		try {
 			getConnection();
