@@ -79,11 +79,16 @@ public class UserController extends HttpServlet {
 			String pw = request.getParameter("pw");
 			String name = request.getParameter("name");
 			String gender = request.getParameter("gender");
-			UserVo userVo = new UserVo(no, pw, name, gender);
-			uDao.Update(userVo);
-			session.removeAttribute("authUser");
-			session.setAttribute("authUser", userVo);
-			WebUtil.redirect(request, response, "./main");
+			if (pw != "" && name != "" && gender != "") {
+				UserVo userVo = new UserVo(no, pw, name, gender);
+				uDao.Update(userVo);
+				session.removeAttribute("authUser");
+				session.setAttribute("authUser", userVo);
+				WebUtil.redirect(request, response, "./main");
+			} else {
+				System.out.println("필수 항목을 다 채우고 다시 해주세요");
+				WebUtil.redirect(request, response, "./user?action=modify");
+			}
 
 		} else {
 			WebUtil.redirect(request, response, "./main");

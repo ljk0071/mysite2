@@ -17,6 +17,8 @@ public class GuestVo {
 		this.content = content;
 		this.regDate = regDate;
 	}
+	public GuestVo() {
+	}
 	public String getName() {
 		return name;
 	}

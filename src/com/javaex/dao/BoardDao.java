@@ -161,13 +161,15 @@ public class BoardDao {
 		List<BoardVo> bList = new ArrayList<BoardVo>();
 		getConnection();
 		try {
-			String query = "select no "
-					+ "    ,title "
-					+ "    ,content "
-					+ "    ,hit "
-					+ "    ,reg_date "
-					+ "    ,user_no "
-					+ "from board "
+			String query = "select b.no "
+					+ "    ,b.title "
+					+ "    ,b.content "
+					+ "    ,u.name "
+					+ "    ,b.hit "
+					+ "    ,b.reg_date "
+					+ "    ,b.user_no "
+					+ "from board b, users u "
+					+ "where b.user_no = u.no "
 					+ "order by no desc";
 
 			pstmt = conn.prepareStatement(query);
@@ -178,10 +180,11 @@ public class BoardDao {
 				int no = rs.getInt(1);
 				String title = rs.getString(2);
 				String content = rs.getString(3);
-				int hit = rs.getInt(4);
-				String regDate = rs.getString(5);
-				int userNo = rs.getInt(6);
-				BoardVo bVo = new BoardVo(no, title, content, hit, regDate, userNo);
+				String name = rs.getString(4);
+				int hit = rs.getInt(5);
+				String regDate = rs.getString(6);
+				int userNo = rs.getInt(7);
+				BoardVo bVo = new BoardVo(no, title, content, name, hit, regDate, userNo);
 				bList.add(bVo);
 			}
 		} catch (SQLException e) {
@@ -195,14 +198,16 @@ public class BoardDao {
 		BoardVo bVo = null;
 		getConnection();
 		try {
-			String query = "select no "
-					+ "    ,title "
-					+ "    ,content "
-					+ "    ,hit "
-					+ "    ,reg_date "
-					+ "    ,user_no "
-					+ "from board "
-					+ "where no = ? ";
+			String query = "select b.no "
+					+ "    ,b.title "
+					+ "    ,b.content "
+					+ "    ,u.name "
+					+ "    ,b.hit "
+					+ "    ,b.reg_date "
+					+ "    ,b.user_no "
+					+ "from board b, users u "
+					+ "where b.user_no = u.no "
+					+ "and b.no = ?";
 
 			pstmt = conn.prepareStatement(query);
 			pstmt.setInt(1, boardNo);
@@ -213,10 +218,11 @@ public class BoardDao {
 				int no = rs.getInt(1);
 				String title = rs.getString(2);
 				String content = rs.getString(3);
-				int hit = rs.getInt(4);
-				String regDate = rs.getString(5);
-				int userNo = rs.getInt(6);
-				bVo = new BoardVo(no, title, content, hit, regDate, userNo);
+				String name = rs.getString(4);
+				int hit = rs.getInt(5);
+				String regDate = rs.getString(6);
+				int userNo = rs.getInt(7);
+				bVo = new BoardVo(no, title, content, name, hit, regDate, userNo);
 			}
 		} catch (SQLException e) {
 			System.out.println("error:" + e);
@@ -282,20 +288,19 @@ public class BoardDao {
 		return count + "건이 수정 되었습니다.";
 	}
 	
-	public String Update(int hit, int boardNo) {
+	public String UpdateHit(int boardNo) {
 		try {
 			getConnection();
 			// 3. SQL문 준비 / 바인딩 / 실행
 
 			// SQL문 준비
 			String query = "update board "
-					+ "set hit = ? "
+					+ "set hit = hit+1 "
 					+ "where no = ?";
 
 			// 바인딩
 			pstmt = conn.prepareStatement(query); // 문자열을 쿼리로 만들기
-			pstmt.setInt(1, hit);
-			pstmt.setInt(2, boardNo);
+			pstmt.setInt(1, boardNo);
 
 			// 실행
 			count = pstmt.executeUpdate(); // 쿼리문 실행 -->리턴값으로 성공갯수

@@ -69,7 +69,7 @@
 										<tr>
 											<td>${bVo.no}</td>
 											<td><a href="./board?action=read&no=${bVo.no}&hit=${bVo.hit}">${bVo.title}</a></td>
-											<td>${uDao.Select(bVo.userNo).name}</td>
+											<td>${bVo.name}</td>
 											<td>${bVo.hit}</td>
 											<td>${bVo.regDate}</td>
 											<c:if test="${authUser.no == bVo.userNo}">

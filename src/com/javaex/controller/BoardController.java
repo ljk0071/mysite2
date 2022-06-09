@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.javaex.dao.BoardDao;
 import com.javaex.dao.UserDao;
@@ -25,16 +24,12 @@ public class BoardController extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		String action = request.getParameter("action");
 		BoardDao bDao = new BoardDao();
-		HttpSession session = null;
 		
 		if (action.equals("list")) {
 			String title = request.getParameter("title");
 			List<BoardVo> bList = bDao.SelectAll();
 			if ( title == null ) {
-				session = request.getSession();
-				UserDao uDao = new UserDao();
-				session.setAttribute("bList", bList);
-				session.setAttribute("uDao", uDao);
+				request.setAttribute("bList", bList);
 				WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 			} else {
 				List<BoardVo> searchList = new ArrayList<BoardVo>();
@@ -44,9 +39,7 @@ public class BoardController extends HttpServlet {
 					}
 				}
 				if (searchList.size() > 0) {
-					UserDao uDao = new UserDao();
 					request.setAttribute("searchList", searchList);
-					request.setAttribute("uDao", uDao);
 					WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 				} else {
 					WebUtil.redirect(request, response, "./board?action=list");
@@ -68,8 +61,7 @@ public class BoardController extends HttpServlet {
 		} else if ("read".equals(action)) {
 			try {
 				int no = Integer.parseInt(request.getParameter("no"));
-				int hit = Integer.parseInt(request.getParameter("hit")) + 1;
-				bDao.Update(hit, no);
+				bDao.UpdateHit(no);
 				BoardVo bVo = bDao.Select(no);
 				request.setAttribute("bVo", bVo);
 				WebUtil.forward(request, response, "/WEB-INF/views/board/read.jsp");
