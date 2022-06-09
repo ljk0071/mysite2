@@ -82,7 +82,6 @@ public class UserController extends HttpServlet {
 			String gender = request.getParameter("gender");
 			UserVo userVo = new UserVo(no, pw, name, gender);
 			uDao.Update(userVo);
-			session = request.getSession();
 			session.removeAttribute("authUser");
 			session.setAttribute("authUser", userVo);
 			WebUtil.redirect(request, response, "./main");
