@@ -44,10 +44,11 @@
 	
 				<div id="board">
 					<div id="list">
-						<form action="" method="post">
+						<form action="./board" method="get">
 							<div class="form-group text-right">
-								<input type="text">
+								<input type="text" name="title" value="">
 								<button type="submit" id=btn_search>검색</button>
+								<input type="hidden" name="action" value="search">
 							</div>
 						</form>
 						<table >
@@ -62,18 +63,36 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach items="${bList}" var="bVo" varStatus="status">
-									<tr>
-										<td>${bVo.no}</td>
-										<td><a href="./board?action=read&no=${bVo.no}&hit=${bVo.hit}">${bVo.title}</a></td>
-										<td>${uDao.Select(bVo.userNo).name}</td>
-										<td>${bVo.hit}</td>
-										<td>${bVo.regDate}</td>
-										<c:if test="${authUser.no == bVo.userNo}">
-											<td><a href="./board?action=delete&no=${bVo.no}">[삭제]</a></td>
-										</c:if>
-									</tr>
-								</c:forEach>
+							<c:choose>
+								<c:when test="${searchList == null}">
+									<c:forEach items="${bList}" var="bVo" varStatus="status">
+										<tr>
+											<td>${bVo.no}</td>
+											<td><a href="./board?action=read&no=${bVo.no}&hit=${bVo.hit}">${bVo.title}</a></td>
+											<td>${uDao.Select(bVo.userNo).name}</td>
+											<td>${bVo.hit}</td>
+											<td>${bVo.regDate}</td>
+											<c:if test="${authUser.no == bVo.userNo}">
+												<td><a href="./board?action=delete&no=${bVo.no}">[삭제]</a></td>
+											</c:if>
+										</tr>
+									</c:forEach>
+								</c:when>
+								<c:when test="${searchList != null}">
+									<c:forEach items="${searchList}" var="sVo" varStatus="status">
+										<tr>
+											<td>${sVo.no}</td>
+											<td><a href="./board?action=read&no=${sVo.no}&hit=${sVo.hit}">${sVo.title}</a></td>
+											<td>${uDao.Select(sVo.userNo).name}</td>
+											<td>${sVo.hit}</td>
+											<td>${sVo.regDate}</td>
+											<c:if test="${authUser.no == sVo.userNo}">
+												<td><a href="./board?action=delete&no=${sVo.no}">[삭제]</a></td>
+											</c:if>
+										</tr>
+									</c:forEach>
+								</c:when>
+							</c:choose>
 							</tbody>
 						</table>
 			

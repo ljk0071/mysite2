@@ -308,5 +308,4 @@ public class BoardDao {
 		Close();
 		return count + "건이 수정 되었습니다.";
 	}
-
 }

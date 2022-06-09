@@ -1,6 +1,7 @@
 package com.javaex.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -25,6 +26,7 @@ public class BoardController extends HttpServlet {
 		String action = request.getParameter("action");
 		BoardDao bDao = new BoardDao();
 		HttpSession session = null;
+		
 		if (action.equals("list")) {
 			session = request.getSession();
 			List<BoardVo> bList = bDao.SelectAll();
@@ -78,6 +80,23 @@ public class BoardController extends HttpServlet {
 		} else if ("delete".equals(action)) {
 			int no = Integer.parseInt(request.getParameter("no"));
 			bDao.Delete(no);
+			WebUtil.redirect(request, response, "./board?action=list");
+		} else if ("search".equals(action)) {
+			String title = request.getParameter("title");
+			List<BoardVo> bList = new ArrayList<BoardVo>();
+			bList = bDao.SelectAll();
+			for(BoardVo bVo : bList) {
+				if( bVo.getTitle().contains(title) ){
+					List<BoardVo> searchList = new ArrayList<BoardVo>();
+					searchList.add(bVo);
+					UserDao uDao = new UserDao();
+					request.setAttribute("searchList", searchList);
+					request.setAttribute("uDao", uDao);
+					WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
+				}
+			}
+			WebUtil.redirect(request, response, "./board?action=list");
+		} else {
 			WebUtil.redirect(request, response, "./board?action=list");
 		}
 
